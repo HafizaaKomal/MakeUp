@@ -14,7 +14,7 @@ const BasketPage = () => {
 
   useEffect(() => {
     dispatch(basketItemPriceTotal());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [basketItems]);
 
   if(basketItems.length === 0){
