@@ -2,6 +2,8 @@
 export const HOME = "/";
 export const HOME_ALT = "/home";
 export const BASKET = '/basket';
+export const Login = '/Login';
+export const SignUp = './SignUp';
 export const PRODUCTS = '/products';
 export const CATEGORY = '/category';
 export const TYPE = '/type';

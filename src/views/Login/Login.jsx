@@ -1,41 +1,89 @@
+import { Link } from 'react-router-dom';
+import { route } from "../../constants";
+import { Navbar, Footer } from "../../components/common/index";
+import React, {  useState } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
-// import { Link } from 'react-router-dom';
-// import { route } from '../../constants';
-// import { Navbar, Footer } from "../components/common/index";
-// import React from 'react'
 
-// function Login() {
-//   return (
-//     <>
-//       <Navbar />
-//       <div className="container my-3 py-3">
-//         <h1 className="text-center">Login</h1>
-//         <hr />
-//         <div class="row my-4 h-100">
-//           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
-//             <form>
-//               <div class="my-3">
-//                 <label for="display-4">Email address</label>
-//                 <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"/>
-//               </div>
-//               <div class="my-3">
-//                 <label for="floatingPassword display-4">Password</label>
-//                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password"/>
-//               </div>
-//               <div className="my-3">
-//                 <p>New Here? <Link to="/register" className="text-decoration-underline text-info">Register</Link> </p>
-//               </div>
-//               <div className="text-center">
-//                 <button class="my-2 mx-auto btn btn-dark" type="submit" disabled>
-//                   Login
-//                 </button>
-//               </div>
-//             </form>
-//           </div>
-//         </div>
-//       </div>
-//       <Footer />
-//     </>
-//   );
-// };
-// export default login
+
+
+function Login() {
+  const { login } = AuthContext;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    const user = {
+      email,
+      password,
+    };
+
+    login(user);
+  };
+
+  return (
+    <loginWrapper>
+    <div className="login-container"> {/* Add container class */}
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="login-input"
+        />
+
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="login-input"
+        />
+
+        {error && <p>{error}</p>}
+
+        <button type="submit" className="login-button">Login</button>
+      </form>
+    </div>
+    </loginWrapper>
+  );
+}
+
+export default Login;
+
+// const loginWrapper = styled.div`
+//   .login-container {
+//   border: 1px solid #ccc;
+//   padding: 20px;
+//   width: 300px;
+//   margin: 0 auto;
+// }
+
+// .login-input {
+//   margin-bottom: 10px;
+//   width: 100%;
+//   padding: 8px;
+// }
+
+// .login-button {
+//   background-color: blue;
+//   color: white;
+//   border: none;
+//   padding: 10px;
+//   width: 100%;
+// }
+// `;

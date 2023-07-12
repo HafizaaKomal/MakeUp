@@ -1,4 +1,7 @@
-import {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
+//import ReactStars from 'react-rating-stars-component';
+import ReactStars from 'react-stars'
+
 import styled from 'styled-components';
 import { Modal } from '../../components/common';
 import { useParams } from 'react-router-dom';
@@ -11,6 +14,9 @@ import { selectSingleProductStatus } from '../../redux/store/productSlice';
 import { STATUS } from '../../utils/status';
 import { addToWishList } from '../../redux/store/wishlistSlice';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Swal from 'sweetalert2';
 
 const ProductSinglePage = () => {
   const { id } = useParams();
@@ -26,27 +32,27 @@ const ProductSinglePage = () => {
   const increaseQty = () => {
     setQuantity((prevQty) => {
       let tempQty = prevQty + 1;
-      if(tempQty > 100) tempQty = 100;
+      if (tempQty > 100) tempQty = 100;
       return tempQty;
     });
-  }
+  };
 
   const decreaseQty = () => {
     setQuantity((prevQty) => {
       let tempQty = prevQty - 1;
-      if(tempQty < 1) tempQty = 1;
+      if (tempQty < 1) tempQty = 1;
       return tempQty;
     });
-  }
+  };
 
   const controls = { increaseQty, decreaseQty, quantity };
 
   const addToCartHandler = () => {
     let newProduct = {
       id: product.id,
-      name: (product.name).trim(),
+      name: product.name.trim(),
       brand: product.brand,
-      price: (parseFloat(product.price)) === 0 ? 2 : (parseFloat(product.price)).toFixed(2),
+      price: parseFloat(product.price) === 0 ? 2 : parseFloat(product.price).toFixed(2),
       price_sign: product.price_sign,
       currency: product.currency,
       description: product.description,
@@ -61,83 +67,137 @@ const ProductSinglePage = () => {
     setTempProduct(newProduct);
     dispatch(addItem(newProduct));
     setCartModal(true);
-  }
+  };
 
   const wishlistHandler = () => {
     setfallInWishlist(true);
-    
-    dispatch(addToWishList({ 
-      id: product.id, 
-      image: product.api_featured_image, 
-      name: product.name,
-      price_sign: product.price_sign,
-      price: product.price
-    }));
-  }
+
+    dispatch(
+      addToWishList({
+        id: product.id,
+        image: product.api_featured_image,
+        name: product.name,
+        price_sign: product.price_sign,
+        price: product.price,
+      })
+    );
+  };
 
   useEffect(() => {
     dispatch(fetchAsyncProductSingle(id));
   }, [id]);
 
+  useEffect(() => {
+    AOS.init({
+      easing: "linear",
+      duration: "1000",
+      once: false,
+    });
+  }, []);
+
+  /*const ratingChanged = (newRating) => {
+    console.log(newRating);
+  };*/
+  const ratingChanged = (newRating) => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Rating Changed!',
+      text: `New Rating: ${newRating}`,
+    });
+  };
+
   return (
     <>
-      { cartModal ? <Modal setCartModal = { setCartModal } product = { tempProduct } /> : "" }
-      
-      {
-        singleProductStatus === STATUS.LOADING ? <Loader /> : (
-          <ProductSinglePageWrapper className='py-3'>
-            <div className='container'>
-              <Breadcrumb />
-              {
-                product && (
-                  <div className='product-details bg-white'>
-                    <div className='details-img'>
-                      <img src = {product.api_featured_image } alt = "" />
-                      <button type = "button" className='add-to-wishlist' onClick = { () => wishlistHandler() }>
-                        {
-                          fallInWishlist === true ? <AiFillHeart size = { 25 } /> : <AiOutlineHeart size = { 25 } />
-                        }
-                      </button>
-                    </div>
-    
-                    <div className='details-content'>
-                      <h4 className = "title fs-20" dangerouslySetInnerHTML={{ __html:product.name }}></h4>
-                      <p className='description py-3 fs-15 op-09' dangerouslySetInnerHTML={{ __html:product.description}}></p>
-    
-                      <div className='d-flex align-items-center flex-wrap pt-3'>
-                        <p className='fw-6 my-2 me-4'>Brand: <span className='fw-4 text-capitalize'> {product.brand} </span> </p>
-                        <p className='fw-6 my-2'>Category: <span className='fw-4 text-capitalize'> {product.category} </span> </p>
-                      </div>
-                      <div className='price my-2'>
-                        <p className='fs-24 fw-6'><span className='fs-16 fw-7'>MRP:</span> {product.price_sign} { parseFloat(product.price) === 0 ? 2 : product.price } <span className='fs-15 fw-4'>inclusive of all taxes</span></p>
-                      </div>
-                      <div className='tags d-flex flex-wrap align-items-center'>
-                        <h4 className='me-2'>Tags:</h4>
-                        {
-                          product.tag_list?.length > 0 ? product.tag_list.map((tag, index) => ( <span className='tag-item fs-14 no-wrap' key = {index}>{tag}</span>)) : ""
-                        }
-                      </div>
-                      
-                      <QuantityControl controls = { controls } />
+      {cartModal ? <Modal setCartModal={setCartModal} product={tempProduct} /> : ""}
 
-                      <div className='btns mt-4'>
-                        <button type = "button" className='add-to-basket bg-pink text-white fs-15' onClick = { addToCartHandler } disabled = { !(singleProductStatus === STATUS.SUCCEEDED) }>Add to Basket</button>
-                      </div>
-                    </div>
+      {singleProductStatus === STATUS.LOADING ? (
+        <Loader />
+      ) : (
+        <ProductSinglePageWrapper className='py-3'>
+          <div className='container'>
+            <Breadcrumb />
+            {product && (
+              <div className='product-details bg-white'>
+                <div className='details-img'>
+                  <img src={product.api_featured_image} data-aos='zoom-out' alt='' />
+                  <button
+                    type='button'
+                    className='add-to-wishlist'
+                    onClick={() => wishlistHandler()}
+                  >
+                    {fallInWishlist === true ? (
+                      <AiFillHeart size={25} />
+                    ) : (
+                      <AiOutlineHeart size={25} />
+                    )}
+                  </button>
+                </div>
+
+                <div className='details-content'>
+                  <h4
+                    className='title fs-20'
+                    dangerouslySetInnerHTML={{ __html: product.name }}
+                  ></h4>
+                  <p
+                    className='description py-3 fs-15 op-09'
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  ></p>
+
+                  <div className='d-flex align-items-center flex-wrap pt-3'>
+                    <p className='fw-6 my-2 me-4'>
+                      Brand: <span className='fw-4 text-capitalize'> {product.brand} </span>{" "}
+                    </p>
+                    <p className='fw-6 my-2'>
+                      Category: <span className='fw-4 text-capitalize'> {product.category} </span>{" "}
+                    </p>
                   </div>
-                )
-              }
-            </div>
-          </ProductSinglePageWrapper>
-        )
-      }
+                  <div className='price my-2'>
+                    <p className='fs-24 fw-6'>
+                      <span className='fs-16 fw-7'>MRP:</span>{" "}
+                      {product.price_sign}{" "}
+                      {parseFloat(product.price) === 0 ? 2 : product.price}{" "}
+                      <span className='fs-15 fw-4'>inclusive of all taxes</span>
+                    </p>
+                  </div>
+                  <div className='tags d-flex flex-wrap align-items-center'>
+                    <h4 className='me-2'>Tags:</h4>
+                    {product.tag_list?.length > 0
+                      ? product.tag_list.map((tag, index) => (
+                          <span className='tag-item fs-14 no-wrap' key={index}>
+                            {tag}
+                          </span>
+                        ))
+                      : ""}
+                  </div>
+                 
+                  <QuantityControl controls={controls} />
+                  <ReactStars
+                  count={5}
+                  onChange={ratingChanged}
+                  size={24}
+                  color2={'#ffd700'}
+                />
+                  <div className='btns mt-4'>
+                    <button
+                      type='button'
+                      className='add-to-basket bg-pink text-white fs-15'
+                      onClick={addToCartHandler}
+                      disabled={!(singleProductStatus === STATUS.SUCCEEDED)}
+                    >
+                      Add to Basket
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </ProductSinglePageWrapper>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default ProductSinglePage
-
-
+export default ProductSinglePage;
 const ProductSinglePageWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.02);
   .product-details{

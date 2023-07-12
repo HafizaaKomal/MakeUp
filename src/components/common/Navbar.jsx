@@ -63,8 +63,8 @@ const Navbar = () => {
                 <ul className='navbar-nav d-flex align-items-center'>
                   <li><Link to = "/" className='nav-link mx-3 fw-6 op-09 no-wrap'>Home</Link></li>
                   <li><Link to = "/products" className='nav-link mx-3 fw-6 op-09 no-wrap'>All Products</Link></li>
-                  <li><Link to = "/" className='nav-link mx-3 fw-6 op-09 no-wrap'>Login</Link></li>
-                  
+                  <li><Link to = "Login" className='nav-link mx-3 fw-6 op-09 no-wrap'>Login</Link></li>
+                  <li><Link to = "Signup" className='nav-link mx-3 fw-6 op-09 no-wrap'>Signup</Link></li>
                 </ul>
               </div>
             </div>

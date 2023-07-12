@@ -2,13 +2,24 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { route } from "../../constants/index";
+import React, { useEffect  } from 'react';
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 const ProductItem = ({ productItem }) => {
     let productID = productItem.product_api_url.replace("http://makeup-api.herokuapp.com/api/v1/products/", "");
+    useEffect(() => {
+        AOS.init({
+          easing:"linear",
+          duration:"1000",
+          once: false,
+        });
+      }, []);
     return (
         <ProductItemWrapper className='product-item bg-white'>
             <div className='item-img img-fit-cover'>
-                <img src = {productItem.api_featured_image} alt = "" />
+                <img src = {productItem.api_featured_image} data-aos="flip-right"alt = "" />
                 <div className='item-brand fs-13 text-capitalize bg-white text-black fw-6'>{productItem.brand}</div>
             </div>
             <div className='item-details'>

@@ -4,15 +4,25 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import { removeItem } from '../../redux/store/basketSlice';
 import PropTypes from 'prop-types';
+import React, { useEffect  } from 'react';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const BasketItem = ({ dataItem, index }) => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    AOS.init({
+      easing:"linear",
+      duration:"1000",
+      once: false,
+    });
+  }, []);
   return (
     <BasketItemWrapper>
         <div className = "data-tr d-grid">
           <div className='data-td px-2'>{index + 1}</div>
             <div className='data-td d-grid'>
-              <div className = "data-td-l"><img src = { dataItem.image } alt = "" /></div>
+              <div className = "data-td-l"><img src = { dataItem.image }data-aos="fade-up-left" alt = "" /></div>
               <div className = "data-td-r">{ dataItem.name }</div>
             </div>
             <div className='data-td px-2'>

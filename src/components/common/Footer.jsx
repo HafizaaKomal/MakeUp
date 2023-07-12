@@ -15,7 +15,7 @@ const Footer = () => {
               <li className='d-grid'>
                 <span className='item-icon text-white d-flex align-items-center justify-content-center align-items-center'><MdLocalShipping /></span>
                 <p className='item-text fs-15 fw-5 op-08'>
-                FREE SHIPPING <span className='d-block fs-13 fw-4'>On Orders Above Rs299</span>
+                FREE SHIPPING <span className='d-block fs-13 fw-4'>On Orders Above Rs199</span>
                 </p>
               </li>
               <li className='d-grid'>

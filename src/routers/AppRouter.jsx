@@ -1,7 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Home, Basket, Error, Search, ViewProductSingle, ViewTypeProductList, ViewProductAll, CategoryProductListPage, WishListPage} from "../views/index"
-import { route } from "../constants/index"
-import BaseLayout from '../layouts/BaseLayout'
+import { Home, Basket, Error, Search, ViewProductSingle, ViewTypeProductList, ViewProductAll, CategoryProductListPage, WishListPage , Login , SignUp} from "../views/index"
+import { route } from "../constants/index";
+import BaseLayout from '../layouts/BaseLayout';
+
+
 
 const AppRouter = () => {
   return (
@@ -10,6 +12,8 @@ const AppRouter = () => {
             <Route path = { route.HOME } element = { <BaseLayout />}>
                 <Route path = { route.HOME } element = { <Home />  } />
                 <Route path = { route.BASKET } element = { <Basket />  } />
+                <Route path = { route.Login } element = { <Login />} />
+                <Route path = { route.SignUp} element = { <SignUp />} />
                 <Route path = { route.PAGE_NOT_FOUND } element = { <Error /> } />
                 <Route path = { route.SEARCH_PRODUCT } element = { <Search />} />
                 <Route path = { route.ALL_PRODUCT } element = { <ViewProductAll /> } />

@@ -11,6 +11,8 @@ import { blogsData } from '../../data';
 import { ProductFeatured } from "../../components/product";
 import { Link } from 'react-router-dom';
 import { route } from '../../constants';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -21,10 +23,18 @@ const HomePage = () => {
     dispatch(fetchAsyncProducts());
   }, [dispatch]);
 
+  useEffect(() => {
+    AOS.init({
+      easing:"linear",
+      duration:"1000",
+      once: false,
+    });
+  }, []);
+  
   return (
     <HomePageWrapper className='container'>
       <div className='banner img-fit-cover'>
-        <img src = { images.banner_image } alt = "" />
+        <img src = { images.banner_image } data-aos="zoom-out-up" alt = "" />
       </div>
 
       <ProductType />

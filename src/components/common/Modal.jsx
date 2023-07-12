@@ -26,7 +26,7 @@ const Modal = ({ product, setCartModal }) => {
                         <div className='preview-quantity'>Quantity: { product.quantity }</div>
 
                         <div className='preview-total'>
-                            <p className='info-price'>Subtotal: <span>$ 57.99</span></p>
+                            <p className='info-price'>Subtotal: <span>$ 58.99</span></p>
                             <span className='info-items fs-13'>(3 items in your basket)</span>
                         </div>
 

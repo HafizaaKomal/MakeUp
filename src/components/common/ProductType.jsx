@@ -5,6 +5,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from 'react-router-dom';
 import { route } from '../../constants';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import React, { useState, useEffect  } from 'react';
 
 const ProductType = () => {
     let settings = {
@@ -42,7 +45,13 @@ const ProductType = () => {
             }
         ]
     };
-
+    useEffect(() => {
+        AOS.init({
+          easing:"linear",
+          duration:"1500",
+          once: false,
+        });
+      }, []);
     return (
         <ProductTypeWrapper>
             <div className='product-type-items py-4 container'>
@@ -52,7 +61,7 @@ const ProductType = () => {
                         <Link to = { `${route.TYPE}/${productTypeItem.product_type}` } key = {idx}>
                             <div className='product-type-item text-center'>
                                 <div className='item-img'>
-                                    <img src = { productTypeItem.image} alt = { productTypeItem.name } />
+                                    <img src = { productTypeItem.image} alt = { productTypeItem.name } data-aos="fade-down" />
                                 </div>
                                 <div className = "item-title fw-5">{productTypeItem.name}</div>
                             </div>
